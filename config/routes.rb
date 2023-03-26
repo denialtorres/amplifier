@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
   devise_for :users
-  get "about", to: "pages#about"
 
   authenticated :user do
-    root "pages#home", as: :authenticated_root
+    root "amplifiers#index", as: :authenticated_root
+    get "new", to: "amplifiers#new"
   end
 
   unauthenticated :user do
     root "pages#about", as: :unauthenticated_root
   end
+
+  get "about", to: "pages#about"
 end
