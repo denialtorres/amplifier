@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: amplifiers
+#
+#  id                :bigint           not null, primary key
+#  client_id         :integer
+#  title             :string
+#  start_at          :datetime
+#  state             :enum
+#  user_id           :bigint
+#  description       :text
+#  amplifier_type_id :bigint
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
 require 'rails_helper'
 
 RSpec.describe Amplifier, type: :model do
