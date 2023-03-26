@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   authenticated :user do
     root "amplifiers#index", as: :authenticated_root
+    get "new", to: "amplifiers#new"
   end
 
   unauthenticated :user do
