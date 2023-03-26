@@ -54,6 +54,9 @@ gem 'devise'
 # state machine
 gem 'aasm'
 
+# pagination
+gem 'pagy'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
