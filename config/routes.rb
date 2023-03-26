@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
+  devise_for :users
   get "about", to: "pages#about"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
-  root "pages#home"
+  authenticated :user do
+    root "pages#home", as: :authenticated_root
+  end
+
+  unauthenticated :user do
+    root "pages#about", as: :unauthenticated_root
+  end
 end
