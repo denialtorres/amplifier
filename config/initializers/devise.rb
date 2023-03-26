@@ -16,7 +16,7 @@ class TurboFailureApp < Devise::FailureApp
   end
 
   def skip_format?
-    %w[html turbo_stream].include?(request_format.to_us)
+    %w(html turbo_stream).include?(request_format.to_us)
   end
 end
 
@@ -30,7 +30,7 @@ Devise.setup do |config|
   # by default. You can change it below and use your own secret key.
   # config.secret_key = '894f5f5164c358a48afff7db8b96796bcacc07265825c3f226fcdb8c550b1b567c00d48323efd465d25c9e5ebe49247d61662c64510fd6359e08d20b22b3d6ca'
   config.parent_controller = "TurboDeviseController"
-  config.navigational_formats =['*/*', :html, :turbo_stream]
+  config.navigational_formats = ['*/*', :html, :turbo_stream]
   config.warden do |manager|
     manager.failure_app = TurboFailureApp
   end

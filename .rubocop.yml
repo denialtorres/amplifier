@@ -1,0 +1,14 @@
+inherit_from:
+  - .rubocop_airbnb.yml
+  - .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'node_modules/**/*'
+    - 'tmp/**/*'
+    - 'spec/models/**'
+    - 'config/initializers/**'
+    - 'Gemfile'
+    - 'app/controllers/turbo_devise_controller.rb'
