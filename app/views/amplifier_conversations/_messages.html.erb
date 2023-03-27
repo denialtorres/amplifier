@@ -1,0 +1,32 @@
+<style media="screen">
+  .message {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+  }
+
+  .message.human {
+    background-color: #f5f5f5;
+  }
+
+  .message.bot {
+    background-color: #e5e5e5;
+  }
+
+  .speaker {
+    font-weight: bold;
+  }
+</style>
+
+<div id="message_container" class="message-container">
+  <% if defined?(conversation) %>
+    <% conversation.messages.each do |message| %>
+      <div class="message <%= message.speaker %>">
+        <span class="speaker"><%= message.speaker.to_s.capitalize %>:</span>
+        <%= message.content %>
+      </div>
+    <% end %>
+  <% else %>
+    New Conversation
+  <% end %>
+</div>

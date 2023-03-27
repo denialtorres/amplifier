@@ -41,6 +41,8 @@ User.create!(email: 'admin@admin.com', password: 'password')
   AmplifierType.create!(title: title)
 end
 
+AmplifierType.create!(title: "Unassigned")
+
 # Create 10 amplifiers assigned to the user
 20.times do
   Amplifier.create!(

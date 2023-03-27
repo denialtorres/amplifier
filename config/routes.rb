@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   authenticated :user do
     root "amplifiers#index", as: :authenticated_root
     get "new", to: "amplifiers#new"
+
+    resources :amplifiers do
+      post 'create_conversation', on: :collection
+    end
   end
 
   unauthenticated :user do
