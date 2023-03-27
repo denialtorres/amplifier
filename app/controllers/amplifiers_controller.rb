@@ -26,6 +26,11 @@ class AmplifiersController < ApplicationController
           "message_container",
           partial: "amplifier_conversations/messages",
           locals: { message: result.message, conversation: result.conversation  }
+        ),
+        turbo_stream.replace(
+          "conversation_form",
+          partial: "amplifiers/form_conversation",
+          locals: { amplifier: result.conversation.amplifier, conversation: result.conversation, message: "" }
         )
      ]
     end
