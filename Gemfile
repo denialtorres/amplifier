@@ -57,6 +57,7 @@ gem 'aasm'
 # pagination
 gem 'pagy'
 
+gem 'webpacker'
 # Use Sass to process CSS
 # gem "sassc-rails"
 
