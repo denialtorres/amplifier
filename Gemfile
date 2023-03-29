@@ -58,6 +58,13 @@ gem 'aasm'
 gem 'pagy'
 
 gem 'webpacker'
+
+# chatgpt wrapper
+gem "ruby-openai"
+
+# interactor gem
+gem "interactor"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 

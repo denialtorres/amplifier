@@ -1,0 +1,11 @@
+<div id="conversation_form" class="conversation-form">
+  <%= form_for [amplifier, conversation], url: create_conversation_amplifiers_path, method: :post, remote: true, data: { turbo: :true, controller: "reset-form", action: "turbo:submit-end->reset-form#reset"  } do |f| %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <%= f.label :content, "Message" %>
+    <%= f.text_area :content, class: "form-control", rows: 3, id: "message_content", value: defined?(message) ? message : "" %>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    <%= f.hidden_field :amplifier_id, value: amplifier.id %>
+    <%= f.hidden_field :conversation_id, value: conversation.id %>
+    <%= f.submit "Send", class: "btn btn-primary mt-2" %>
+  <% end %>
+</div>

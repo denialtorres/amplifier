@@ -10,7 +10,7 @@
                 <input type="email" class="form-control" id="inputmailh" placeholder="Rain Earth"> </div>
             </div>
           </form>
-          <p class="text-monospace border-dark border">Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Monospace. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <%= render partial: "amplifier_conversations/messages", locals: { amplifier: @amplifier, conversation: AmplifierConversation.new(amplifier: @amplifier) } %>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
@@ -34,22 +34,16 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6" style="">
+        <div class="col-md-6" data-controller="messages">
           <h1 class="">Amplifier</h1>
-          <form class="text-right mb-3">
-            <div class="form-group">
-              <textarea class="form-control" id="form32" rows="3" placeholder="How Rain cycle works?"></textarea>
-            </div>
-            <div style = "display: flex; justify-content:flex-end">
-              <button type="submit" class="btn btn-primary mt-2">Send</button>
-            </div>
-          </form>
+          <%= render partial: "amplifiers/form_conversation", locals: { amplifier: @amplifier, conversation: @conversation } %>
           <div class="card mb-3">
             <div class="card-header"> Amplifier Type</div>
             <div class="card-body">
               <div class="btn-group">
-                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> Sciences </button>
-                <div class="dropdown-menu"> <a class="dropdown-item" href="#">Action</a>
+                <div class="form-group">
+                  <%= label_tag :amplifier_type_id, "Amplifier Type" %>
+                  <%= select_tag :amplifier_type_id, options_for_select(AmplifierType.all.map{ |type| [type.title, type.id] }, selected: @amplifier.amplifier_type_id), class: "form-control" %>
                 </div>
               </div>
               <p>Category Type</p>
