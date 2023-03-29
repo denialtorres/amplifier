@@ -1,6 +1,6 @@
 class AmplifiersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_amplifier, only: [:destroy]
+  before_action :find_amplifier, only: [:destroy, :update]
 
   def index
     @amplifiers = current_user.amplifiers.order(created_at: :desc)
@@ -13,6 +13,19 @@ class AmplifiersController < ApplicationController
                                                 )
     @conversation = AmplifierConversation.create!(amplifier: @amplifier)
     @client = OpenAI::Client.new
+  end
+
+  def update
+    if @amplifier.update(amplifier_params)
+      flash[:notice] = 'Amplifier successfully updated'
+      respond_to do |format|
+        format.html { head :no_content }
+        format.turbo_stream
+      end
+    else
+      flash.now[:alert] = 'Failed to update amplifier'
+      render 'edit'
+    end
   end
 
   def destroy
@@ -63,6 +76,10 @@ class AmplifiersController < ApplicationController
   end
 
   private
+
+  def amplifier_params
+    params.require(:amplifier).permit(:title)
+  end
 
   def message_params
     params.require(:amplifier_conversation).permit(:content, :conversation_id)
