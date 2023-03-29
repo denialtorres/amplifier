@@ -1,15 +1,29 @@
+<style>
+  #amplifier-title-saved {
+    display: none;
+    opacity: 0;
+  }
+
+  #amplifier-title-saved.show {
+    display: block;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out; /* Add a transition for the opacity property */
+  }
+</style>
+
 <body>
   <div class="py-5" >
     <div class="container">
       <div class="row">
         <div class="col-md-6">
           <h1 class="">Create Assignment</h1>
-          <form id="c_form-h" style="margin-bottom: 20px;">
-            <div class="form-group row"> <label for="inputmailh" class="col-2 col-form-label">Title</label>
-              <div class="col-10">
-                <input type="email" class="form-control" id="inputmailh" placeholder="Rain Earth"> </div>
+          <%= form_for @amplifier, url: amplifier_path(@amplifier), html: {method: "patch", 'data-turbo-action': "replace", id: "amplifier-form"} do |f| %>
+            <div class="form-group">
+              <%= f.label :title, "Amplifier Title:" %>
+              <%= f.text_field :title, id: "amplifier-title", class: "form-control" %>
+              <div id="amplifier-title-saved" class="text-success">Saved</div>
             </div>
-          </form>
+          <% end %>
           <%= render partial: "amplifier_conversations/messages", locals: { amplifier: @amplifier, conversation: AmplifierConversation.new(amplifier: @amplifier) } %>
           <div class="row">
             <div class="col-md-12">
