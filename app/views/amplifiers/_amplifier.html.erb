@@ -1,0 +1,30 @@
+<div class="row mb-4" id="amplifier_<%= amplifier.id %>">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="card-title mb-0"><%= amplifier.title %></h5>
+          <div class="assignments" style="text-align: right;">
+            <p class="btn btn-sm btn-success" style="cursor: default;">Assignments</p>
+            <p><%= amplifier.amplifier_type.title %></p>
+          </div>
+        </div>
+        <p class="card-text"><%= amplifier.description %></p>
+        <div class="d-flex justify-content-between align-items-center">
+          <small class="text-muted"><%= amplifier.created_at.strftime("%B %d, %Y") %></small>
+          <div class="btn-group">
+            <%= link_to "Delete", amplifier_path(amplifier),
+                data: {turbo_method: :delete, turbo_confirm: 'Are you sure'},
+                class:"btn btn-sm btn-outline-danger" %>
+            <% if amplifier.state == 'draft' %>
+              <a href="#" class="btn btn-sm btn-outline-success">Publish</a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted"><%= amplifier.amplifier_conversations.count %> attachments</small>
+      </div>
+    </div>
+  </div>
+</div>
