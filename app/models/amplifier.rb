@@ -18,7 +18,7 @@ class Amplifier < ApplicationRecord
 
   belongs_to :user
   belongs_to :amplifier_type
-  has_many :amplifier_conversations
+  has_many :amplifier_conversations, dependent: :destroy
 
   enum state: {
     draft: 'draft',

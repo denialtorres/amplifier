@@ -5,40 +5,12 @@
         <h1 class="text-left">History</h1>
         <%= link_to "Create new", new_path, class: "btn btn-primary" %>
       </div>
-      <div class="row">
+      <div class="row" id="amplifiers_list">
         <% @amplifiers.each do |amplifier| %>
-          <div class="row mb-4">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="card-title mb-0"><%= amplifier.title %></h5>
-                    <div class="assignments" style="text-align: right;">
-                      <p class="btn btn-sm btn-success" style="cursor: default;">Assignments</p>
-                      <p><%= amplifier.amplifier_type.title %></p>
-                    </div>
-                  </div>
-                  <p class="card-text"><%= amplifier.description %></p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted"><%= amplifier.created_at.strftime("%B %d, %Y") %></small>
-                    <div class="btn-group">
-                      <a href="#" class="btn btn-sm btn-outline-danger">Delete</a>
-                      <% if amplifier.state == 'draft' %>
-                        <a href="#" class="btn btn-sm btn-outline-success">Publish</a>
-                      <% end %>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted"><%= amplifier.amplifier_conversations.count %> attachments</small>
-                </div>
-              </div>
-            </div>
-          </div>
+          <%= render partial: "amplifier", locals: { amplifier: amplifier } %>
         <% end %>
       </div>
-
-      <%== pagy_bootstrap_nav(@pagy) %>
+      <%= render partial: "pagination" %>
   </div>
  </div>
 </body>

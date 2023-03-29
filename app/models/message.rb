@@ -10,7 +10,7 @@
 #  updated_at                :datetime         not null
 #
 class Message < ApplicationRecord
-  belongs_to :amplifier_conversation, dependent: :destroy
+  belongs_to :amplifier_conversation
 
   enum speaker: { ai: 'ai', human: 'human' }
 end
