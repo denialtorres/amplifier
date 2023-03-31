@@ -23,6 +23,7 @@ default: &default
 
 development:
   <<: *default
+  url: <%= ENV.fetch("DATABASE_URL") { "localhost" } %>
   database: amplifier_development
 
   # The specified database role being used to connect to postgres.
