@@ -65,7 +65,7 @@ class AmplifiersController < ApplicationController
     )
     if result.success?
       render turbo_stream: [
-        turbo_stream.append(
+        turbo_stream.replace(
           "message_container",
           partial: "amplifier_conversations/messages",
           locals: { message: result.message, conversation: result.conversation  }
