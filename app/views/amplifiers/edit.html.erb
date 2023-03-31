@@ -24,7 +24,7 @@
               <div id="amplifier-title-saved" class="text-success">Saved</div>
             </div>
           <% end %>
-          <%= render partial: "amplifier_conversations/messages", locals: { amplifier: @amplifier, conversation: AmplifierConversation.new(amplifier: @amplifier) } %>
+          <%= render partial: "amplifier_conversations/messages", locals: { amplifier: @amplifier, conversation: @conversation  } %>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">

@@ -23,7 +23,7 @@
     <% conversation.messages.each do |message| %>
       <div class="message <%= message.speaker %>">
         <span class="speaker"><%= message.speaker.to_s.capitalize %>:</span>
-        <%= message.content %>
+        <%= simple_format(message.content) %>
       </div>
     <% end %>
   <% else %>
