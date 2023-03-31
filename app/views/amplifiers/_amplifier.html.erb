@@ -13,6 +13,7 @@
         <div class="d-flex justify-content-between align-items-center">
           <small class="text-muted"><%= amplifier.created_at.strftime("%B %d, %Y") %></small>
           <div class="btn-group">
+            <%= link_to "Edit", edit_amplifier_path(amplifier), class: "btn btn-sm btn-outline-primary" %>
             <%= link_to "Delete", amplifier_path(amplifier),
                 data: {turbo_method: :delete, turbo_confirm: 'Are you sure'},
                 class:"btn btn-sm btn-outline-danger" %>

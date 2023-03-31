@@ -3,7 +3,7 @@
     <div class="container">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="text-left">History</h1>
-        <%= link_to "Create new", new_path, class: "btn btn-primary" %>
+        <%= link_to 'Create New', new_amplifier_path, class: 'btn btn-primary' %>
       </div>
       <div class="row" id="amplifiers_list">
         <% @amplifiers.each do |amplifier| %>

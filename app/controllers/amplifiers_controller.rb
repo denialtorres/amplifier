@@ -1,18 +1,22 @@
 class AmplifiersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_amplifier, only: [:destroy, :update]
+  before_action :find_amplifier, only: [:destroy, :update, :edit]
 
   def index
     @amplifiers = current_user.amplifiers.order(created_at: :desc)
     @pagy, @amplifiers = pagy(@amplifiers)
   end
 
-  def new
+  def edit
+    @conversation = AmplifierConversation.find_or_create_by(amplifier: @amplifier)
+  end
+
+  def new_amplifier
     @amplifier = current_user.amplifiers.create(user: current_user, title: "Untitled",
                                                 amplifier_type: AmplifierType.find_by(title: "Unassigned")
                                                 )
-    @conversation = AmplifierConversation.create!(amplifier: @amplifier)
     @client = OpenAI::Client.new
+    redirect_to edit_amplifier_path(@amplifier)
   end
 
   def update
@@ -61,7 +65,7 @@ class AmplifiersController < ApplicationController
     )
     if result.success?
       render turbo_stream: [
-        turbo_stream.append(
+        turbo_stream.replace(
           "message_container",
           partial: "amplifier_conversations/messages",
           locals: { message: result.message, conversation: result.conversation  }
