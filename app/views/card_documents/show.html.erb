@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Document Unique ID:</strong>
+  <%= @card_document.document_unique_id %>
+</p>
+
+<p>
+  <strong>Text Document:</strong>
+  <%= @card_document.text_document %>
+</p>
+
+<%= link_to 'Edit', edit_card_document_path(@card_document) %>

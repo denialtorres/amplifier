@@ -12,7 +12,9 @@
 #  updated_at             :datetime         not null
 #
 class User < ApplicationRecord
-  has_many :amplifiers
+  has_many :amplifiers, dependent: :destroy
+  has_many :card_documents, dependent: :destroy
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,

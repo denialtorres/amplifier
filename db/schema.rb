@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_26_210943) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_03_230751) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -77,6 +77,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_26_210943) do
     t.index ["amplifier_conversation_id"], name: "index_attachments_on_amplifier_conversation_id"
   end
 
+  create_table "card_documents", force: :cascade do |t|
+    t.uuid "document_unique_id", default: -> { "gen_random_uuid()" }, null: false
+    t.text "text_document"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.json "metadata"
+    t.index ["document_unique_id"], name: "index_card_documents_on_document_unique_id", unique: true
+    t.index ["user_id"], name: "index_card_documents_on_user_id"
+  end
+
   create_table "messages", force: :cascade do |t|
     t.string "content"
     t.enum "speaker", enum_type: "speaker_type"
@@ -104,5 +116,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_26_210943) do
   add_foreign_key "amplifiers", "amplifier_types"
   add_foreign_key "amplifiers", "users"
   add_foreign_key "attachments", "amplifier_conversations"
+  add_foreign_key "card_documents", "users"
   add_foreign_key "messages", "amplifier_conversations"
 end

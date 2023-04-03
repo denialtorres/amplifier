@@ -65,6 +65,9 @@ gem "ruby-openai"
 # interactor gem
 gem "interactor"
 
+# pdf converter
+gem "pdf-reader"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
