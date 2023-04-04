@@ -68,6 +68,12 @@ gem "interactor"
 # pdf converter
 gem "pdf-reader"
 
+# rest client
+gem "httparty"
+
+# for env variables
+gem "figaro"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
