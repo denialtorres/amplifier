@@ -23,6 +23,12 @@ class DocsApi
     convert(response)
   end
 
+  def query_documents(params)
+    response = query(params)
+
+    convert(response)
+  end
+
   def bearer_token
     "Bearer #{ENV.fetch("DOCS_AUTH_TOKEN")}"
   end
@@ -33,6 +39,13 @@ class DocsApi
 
   def upsert(params)
     self.class.post("#{base_uri}/documents/upsert",
+                    body: params.to_json,
+                    multipart: true,
+                    headers: headers)
+  end
+
+  def query(params)
+    self.class.post("#{base_uri}/documents/query",
                     body: params.to_json,
                     multipart: true,
                     headers: headers)
