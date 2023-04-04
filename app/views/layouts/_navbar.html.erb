@@ -9,6 +9,11 @@
         <li class="nav-item">
           <%= link_to "Home", user_signed_in? ? authenticated_root_path : unauthenticated_root_path, class:'nav-link'%>
         </li>
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to "Cards", card_documents_path, class:'nav-link'%>
+          </li>
+        <% end %>
       </ul>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <% if current_user %>

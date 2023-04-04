@@ -1,0 +1,24 @@
+<h1>Card Documents</h1>
+
+<%= link_to 'New Card Document', new_card_document_path %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Document Unique ID</th>
+      <th>Text Document</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @card_documents.each do |card_document| %>
+      <tr>
+        <td><%= card_document.document_unique_id %></td>
+        <td><%= link_to 'Show', card_document %></td>
+        <td><%= link_to 'Edit', edit_card_document_path(card_document) %></td>
+        <td><%= link_to 'Destroy', card_document, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
