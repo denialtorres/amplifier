@@ -10,7 +10,8 @@
 #  updated_at                :datetime         not null
 #
 class Message < ApplicationRecord
-  belongs_to :amplifier_conversation
+  belongs_to :amplifier_conversation, optional: true
+  belongs_to :card_document, optional: true
 
   enum speaker: { ai: 'ai', human: 'human' }
 end

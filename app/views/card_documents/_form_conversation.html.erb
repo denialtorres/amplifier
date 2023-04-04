@@ -1,0 +1,37 @@
+<div id="conversation_form" class="conversation-form">
+  <%= form_for card_document, url: create_conversation_card_documents_path, method: :post, remote: true, data: { turbo: :true, controller: "reset-form", action: "turbo:submit-end->reset-form#reset"  } do |f| %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <%= f.label :content, "Message" %>
+    <%= f.text_area :content, class: "form-control", rows: 3, id: "message_content", value: defined?(message) ? message : "", oninput: "wordCounter()" %>
+    <div class="d-flex justify-content-between mt-2">
+      <%= f.submit "Send", class: "btn btn-primary" %>
+      <span id="word_counter">200 words remaining</span>
+    </div>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    <%= f.hidden_field :card_document_id, value: card_document.id %>
+  <% end %>
+</div>
+
+<script>
+  function wordCounter() {
+    const maxLength = 200;
+    const messageContent = document.getElementById("message_content");
+    const wordCounterElement = document.getElementById("word_counter");
+    const submitButton = document.querySelector("input[type='submit']");
+    const words = messageContent.value.trim().split(/\s+/);
+    const wordCount = words.length === 1 && words[0] === "" ? 0 : words.length;
+
+    const remainingWords = maxLength - wordCount;
+    wordCounterElement.textContent = `${remainingWords} words remaining`;
+
+    if (remainingWords <= 0) {
+      const allowedWords = words.slice(0, maxLength).join(" ");
+      messageContent.value = allowedWords;
+      submitButton.disabled = true;
+      wordCounterElement.style.color = "red";
+    } else {
+      submitButton.disabled = false;
+      wordCounterElement.style.color = "";
+    }
+  }
+</script>
