@@ -11,6 +11,7 @@
 #
 class AmplifierPromptCategory < ApplicationRecord
   belongs_to :amplifier_prompt
+  belongs_to :amplifier_type
 
   # Add any validations and associations here
 end

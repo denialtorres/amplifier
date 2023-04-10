@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_26_210943) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_10_201737) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -35,7 +35,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_26_210943) do
     t.bigint "amplifier_prompt_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "amplifier_type_id", null: false
     t.index ["amplifier_prompt_id"], name: "index_amplifier_prompt_categories_on_amplifier_prompt_id"
+    t.index ["amplifier_type_id"], name: "index_amplifier_prompt_categories_on_amplifier_type_id"
   end
 
   create_table "amplifier_prompts", force: :cascade do |t|
@@ -100,6 +102,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_26_210943) do
 
   add_foreign_key "amplifier_conversations", "amplifiers"
   add_foreign_key "amplifier_prompt_categories", "amplifier_prompts"
+  add_foreign_key "amplifier_prompt_categories", "amplifier_types"
   add_foreign_key "amplifier_prompts", "amplifier_types"
   add_foreign_key "amplifiers", "amplifier_types"
   add_foreign_key "amplifiers", "users"
