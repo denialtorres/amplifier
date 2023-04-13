@@ -1,0 +1,6 @@
+# Add configuration values here, as shown below.
+#
+# Ask me for the keys
+DOCS_AUTH_TOKEN: ""
+DOCS_SERVICE_URL: "https://llmi.herokuapp.com"
+CHAT_GPT: ""
