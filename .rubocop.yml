@@ -12,3 +12,6 @@ AllCops:
     - 'config/initializers/**'
     - 'Gemfile'
     - 'app/controllers/turbo_devise_controller.rb'
+
+Layout/LineLength:
+  Max: 160
