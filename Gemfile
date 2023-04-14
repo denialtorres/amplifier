@@ -65,6 +65,18 @@ gem "ruby-openai"
 # interactor gem
 gem "interactor"
 
+# pdf converter
+gem "pdf-reader"
+
+# for env variables
+gem "figaro"
+
+# mimetypes
+gem "mimemagic"
+
+# rest client
+gem "http"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
