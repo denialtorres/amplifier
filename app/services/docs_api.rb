@@ -1,5 +1,3 @@
-# wrapper for llmi api
-
 require "http"
 require "mimemagic"
 
@@ -7,7 +5,7 @@ require "mimemagic"
 class DocsApi
   def initialize
     @headers = {
-      "Authorization" => bearer_token
+      "Authorization" => bearer_token,
     }
     @base_uri = ENV.fetch("DOCS_SERVICE_URL")
   end
@@ -18,59 +16,66 @@ class DocsApi
 
   def upsert_documents(params)
     response = upsert(params)
-
-    convert(response)
+    convert_response(response)
   end
 
   def query_documents(params)
     response = query(params)
-
-    convert(response)
+    convert_response(response)
   end
 
   def upsert_file(params, file_path)
     response = upload_file(params, file_path)
-
-    convert(response)
-  end
-
-  def bearer_token
-    "Bearer #{ENV.fetch("DOCS_AUTH_TOKEN")}"
+    convert_response(response)
   end
 
   private
 
   attr_reader :headers, :base_uri
 
+  def bearer_token
+    "Bearer #{ENV.fetch("DOCS_AUTH_TOKEN")}"
+  end
+
   def upsert(params)
-    HTTP.headers(headers)
-        .post("#{base_uri}/documents/upsert", json: params)
+    post("#{base_uri}/documents/upsert", json: params)
   end
 
   def query(params)
-    HTTP.headers(headers)
-        .post("#{base_uri}/documents/query", json: params)
+    post("#{base_uri}/documents/query", json: params)
   end
 
   def upload_file(params, file_path)
+    form_data = build_form_data(params, file_path)
+    post("#{base_uri}/documents/upsert-file", form: form_data)
+  end
+
+  def post(uri, options)
+    HTTP.headers(headers).post(uri, options)
+  end
+
+  def build_form_data(params, file_path)
+    file_io, content_type, filename = read_file(file_path)
+
+    {
+      file: HTTP::FormData::File.new(file_io, content_type: content_type, filename: filename),
+      metadata: params[:metadata].to_json,
+    }
+  end
+
+  def read_file(file_path)
     file_contents = IO.binread(file_path)
     file_io = StringIO.new(file_contents)
     content_type = MimeMagic.by_magic(file_io).type
     filename = File.basename(file_path)
 
-    response = HTTP.headers(headers)
-                  .post("#{base_uri}/documents/upsert-file", form: {
-                    file: HTTP::FormData::File.new(file_io, content_type: content_type, filename: filename),
-                    metadata: params[:metadata].to_json
-                  })
-
-    response
+    [file_io, content_type, filename]
   end
 
-  def convert(response)
+  def convert_response(response)
     OpenStruct.new(
       errors: response.status.success? ? {} : response.to_s,
-      body: response.status.success? ? response.to_s : {}
+      body: response.status.success? ? JSON.parse(response.body) : {}
     )
   end
 end
