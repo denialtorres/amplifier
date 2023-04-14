@@ -13,8 +13,7 @@ class AmplifiersController < ApplicationController
 
   def new_amplifier
     @amplifier = current_user.amplifiers.create(user: current_user, title: "Untitled",
-                                                amplifier_type: AmplifierType.find_by(title: "Unassigned")
-                                                )
+                                                amplifier_type: AmplifierType.find_by(title: "Unassigned"))
     @client = OpenAI::Client.new
     redirect_to edit_amplifier_path(@amplifier)
   end
@@ -45,8 +44,11 @@ class AmplifiersController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.remove("amplifier_#{@amplifier.id}"),
-            (turbo_stream.append("amplifiers_list", partial: "amplifier", locals: { amplifier: next_item }) if next_item),
-            turbo_stream.replace("pagination", partial: "pagination", locals: { pagy: @pagy })
+            (if next_item
+               turbo_stream.append("amplifiers_list", partial: "amplifier",
+                                                      locals: { amplifier: next_item })
+             end),
+            turbo_stream.replace("pagination", partial: "pagination", locals: { pagy: @pagy }),
           ].compact
         end
         format.html { redirect_to amplifiers_path, notice: 'Amplifier successfully deleted.' }
@@ -68,14 +70,17 @@ class AmplifiersController < ApplicationController
         turbo_stream.replace(
           "message_container",
           partial: "amplifier_conversations/messages",
-          locals: { message: result.message, conversation: result.conversation  }
+          locals: { message: result.message, conversation: result.conversation }
         ),
         turbo_stream.replace(
           "conversation_form",
           partial: "amplifiers/form_conversation",
-          locals: { amplifier: result.conversation.amplifier, conversation: result.conversation, message: "" }
-        )
-     ]
+          locals: {
+            amplifier: result.conversation.amplifier, conversation: result.conversation,
+            message: "",
+          }
+        ),
+      ]
     end
   end
 
