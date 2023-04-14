@@ -6,10 +6,12 @@ class CreateConversationOrganizer
   organize CreateConversation,
            CreateMessage,
            GenerateConversation,
+           RetrieveSemanticResults,
            GenerateResponse,
            SaveResponse
 
   before do
     context.client = OpenAI::Client.new
+    context.docs_api = DocsApi.instance
   end
 end

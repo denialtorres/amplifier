@@ -2,7 +2,7 @@ class GenerateConversation
   include Interactor
 
   def call
-    context.full_conversation = build_full_conversation
+    context.chat_conversation = build_full_conversation
   rescue StandardError => e
     context.fail!(message: e.message, error_code: :internal)
   end
@@ -18,7 +18,7 @@ class GenerateConversation
 
     match =  {
       human: "user",
-      ai: "assistant"
+      ai: "assistant",
     }
 
     messages.each do |message|
@@ -26,12 +26,30 @@ class GenerateConversation
 
       h = {
         role: role,
-        content: message[:content]
+        content: message[:content],
       }
       chat_messages.push(h)
     end
 
-    return chat_messages
+    chat_messages.unshift(user_instruction)
+
+    chat_messages.unshift(system_message)
+
+    chat_messages
+  end
+
+  def user_instruction
+    {
+      role: "user",
+      content: "whenever i refer to a video or a document or image or any type of file, I am actually talking about the results of the semantic search",
+    }
+  end
+
+  def system_message
+    {
+      role: "system",
+      content: "Based on the semantic search or conversation history answer the question or summary the information asked by the user",
+    }
   end
 
   def retrieve_messages
