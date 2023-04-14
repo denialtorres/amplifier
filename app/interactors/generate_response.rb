@@ -9,15 +9,16 @@ class GenerateResponse
 
   private
 
-  delegate :full_conversation, :client, to: :context
+  delegate :final_converstaion, :client, to: :context
 
   def retrieve_response
     response = client.chat(
-        parameters: {
-            model: "gpt-3.5-turbo", # Required.
-            messages: full_conversation,
-            temperature: 0.7
-        })
+      parameters: {
+        model: "gpt-3.5-turbo", # Required.
+        messages: final_converstaion,
+        temperature: 0.7,
+      }
+    )
 
     response.dig("choices", 0, "message", "content")
   end
