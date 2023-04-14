@@ -77,6 +77,9 @@ gem "mimemagic"
 # rest client
 gem "http"
 
+# for heroku
+gem "rails_12factor"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
