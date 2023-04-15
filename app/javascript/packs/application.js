@@ -1,5 +1,5 @@
-import _ from 'lodash';
-import Rails from "@rails/ujs";
+window.Rails = require("@rails/ujs")
 
+import _ from 'lodash';
 
 Rails.start();

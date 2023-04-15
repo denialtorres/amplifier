@@ -11,6 +11,6 @@
 #
 class Attachment < ApplicationRecord
   belongs_to :amplifier_conversation
-
+  has_one_attached :file
   # Add any validations and associations here
 end

@@ -23,6 +23,15 @@
               <%= f.text_field :title, id: "amplifier-title", class: "form-control" %>
               <div id="amplifier-title-saved" class="text-success">Saved</div>
             </div>
+
+            <div class="form-group" data-controller="amplifier">
+              <%= f.label :attachment, "Attachment:" %>
+              <%= f.file_field :attachment, data: { action: 'change->amplifier#uploadAttachment' } %>
+              <%= hidden_field_tag :amplifier_conversation_id, @conversation.id %>
+              <ul class="uploaded-files-list">
+                <%= render partial: "uploaded_files", locals: { uploaded_files: @conversation.attachments } %>
+              </ul>
+            </div>
           <% end %>
           <%= render partial: "amplifier_conversations/messages", locals: { amplifier: @amplifier, conversation: @conversation  } %>
           <div class="row">
