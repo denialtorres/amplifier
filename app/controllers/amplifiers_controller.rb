@@ -8,6 +8,8 @@ class AmplifiersController < ApplicationController
   end
 
   def edit
+    # for test background job
+    ProcessUploadedFileJob.perform_later
     @conversation = AmplifierConversation.find_or_create_by(amplifier: @amplifier)
   end
 
