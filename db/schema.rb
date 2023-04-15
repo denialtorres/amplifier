@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_14_224330) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_15_062403) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -102,6 +102,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_14_224330) do
     t.bigint "amplifier_conversation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "document_id"
     t.index ["amplifier_conversation_id"], name: "index_attachments_on_amplifier_conversation_id"
   end
 
