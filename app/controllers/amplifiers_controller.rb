@@ -8,8 +8,6 @@ class AmplifiersController < ApplicationController
   end
 
   def edit
-    # for test background job
-    ProcessUploadedFileJob.perform_later
     @conversation = AmplifierConversation.find_or_create_by(amplifier: @amplifier)
   end
 
@@ -91,6 +89,8 @@ class AmplifiersController < ApplicationController
     @attachment.file.attach(params[:attachment][:file])
 
     if @attachment.save
+      ProcessUploadedFileJob.perform_later(@attachment.id)
+
       render json: { success: true, attachment: { filename: @attachment.file.filename.to_s } }, status: :created
     else
       render json: { success: false, errors: @attachment.errors.full_messages }, status: :unprocessable_entity

@@ -12,5 +12,7 @@
 class Attachment < ApplicationRecord
   belongs_to :amplifier_conversation
   has_one_attached :file
-  # Add any validations and associations here
+
+  # Scope to filter attachments that have a document_id
+  scope :processed_files, -> { where.not(document_id: nil) }
 end

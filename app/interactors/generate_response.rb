@@ -16,7 +16,7 @@ class GenerateResponse
       parameters: {
         model: "gpt-3.5-turbo", # Required.
         messages: final_converstaion,
-        temperature: 0.7,
+        temperature: 1.0,
       }
     )
 

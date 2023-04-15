@@ -9,16 +9,23 @@ class RetrieveSemanticResults
 
   private
 
-  delegate :chat_conversation, :docs_api, :message, to: :context
+  delegate :chat_conversation, :docs_api, :message, :conversation, to: :context
 
   def include_semantic_results
-    results = docs_api.query_documents(conversation_params).body
-    results_data = results["results"].first["results"]
-    texts = results_data.map { |result| result["text"] }
-    context_semantic = texts.join("\n\n")
+    # loop results based of the numbers of files
+    semantic_result = ""
+
+    conversation.processed_files.each do |document|
+      results = docs_api.query_documents(conversation_params(document.document_id)).body
+      results_data = results["results"].first["results"]
+      texts = results_data.map { |result| result["text"] }
+      context_semantic = texts.join("\n\n")
+      semantic_result << context_semantic
+    end
+
     assistant_semantic_context = {
       role: "assistant",
-      content: "Based on a semantic search, here are the top results: " + context_semantic,
+      content: "Based on a semantic search, here are the top results: " + semantic_result,
     }
 
     chat_conversation.push(assistant_semantic_context)
@@ -26,13 +33,13 @@ class RetrieveSemanticResults
     chat_conversation
   end
 
-  def conversation_params
+  def conversation_params(document_id)
     {
       "queries": [
         {
           "query": message.content,
           "filter": {
-            "document_id": "19f38af2-c97f-408c-b2a6-4fbfec0b0af9",
+            "document_id": document_id,
           },
         },
       ],

@@ -16,4 +16,8 @@ class AmplifierConversation < ApplicationRecord
 
   # TODO: Discuss this since a converstion is a collection of question and answers
   enum conversation_type: { question: 'question', answer: 'answer' }
+
+  def processed_files
+    attachments.processed_files
+  end
 end

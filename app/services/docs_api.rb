@@ -24,8 +24,8 @@ class DocsApi
     convert_response(response)
   end
 
-  def upsert_file(params, file_path)
-    response = upload_file(params, file_path)
+  def upsert_file(params, attachment)
+    response = upload_file(params, attachment)
     convert_response(response)
   end
 
@@ -45,8 +45,8 @@ class DocsApi
     post("#{base_uri}/documents/query", json: params)
   end
 
-  def upload_file(params, file_path)
-    form_data = build_form_data(params, file_path)
+  def upload_file(params, attachment)
+    form_data = build_form_data(params, attachment)
     post("#{base_uri}/documents/upsert-file", form: form_data)
   end
 
@@ -54,8 +54,8 @@ class DocsApi
     HTTP.headers(headers).post(uri, options)
   end
 
-  def build_form_data(params, file_path)
-    file_io, content_type, filename = read_file(file_path)
+  def build_form_data(params, attachment)
+    file_io, content_type, filename = read_file_from_active_storage(attachment)
 
     {
       file: HTTP::FormData::File.new(file_io, content_type: content_type, filename: filename),
@@ -68,6 +68,16 @@ class DocsApi
     file_io = StringIO.new(file_contents)
     content_type = MimeMagic.by_magic(file_io).type
     filename = File.basename(file_path)
+
+    [file_io, content_type, filename]
+  end
+
+  def read_file_from_active_storage(attachment)
+    file_blob = attachment.file.blob
+    file_contents = file_blob.download
+    file_io = StringIO.new(file_contents)
+    content_type = MimeMagic.by_magic(file_io).type
+    filename = file_blob.filename.to_s
 
     [file_io, content_type, filename]
   end
