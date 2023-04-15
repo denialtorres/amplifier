@@ -1,5 +1,8 @@
 import _ from 'lodash';
 
+// loading controllers as well
+import "./stimulus_setup";
+
 document.addEventListener('turbo:load', () => {
   console.log("amplifier loaded");
   const amplifierTitleInput = document.getElementById('amplifier-title');

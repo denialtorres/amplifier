@@ -80,6 +80,9 @@ gem "http"
 # for heroku
 gem "rails_12factor"
 
+# s3
+gem "aws-sdk-s3", require: false
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 

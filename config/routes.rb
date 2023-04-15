@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
     resources :amplifiers do
       post 'create_conversation', on: :collection
+      post 'attachments', on: :collection
     end
   end
 

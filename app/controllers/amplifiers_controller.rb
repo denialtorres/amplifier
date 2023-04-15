@@ -84,6 +84,17 @@ class AmplifiersController < ApplicationController
     end
   end
 
+  def attachments
+    @attachment = Attachment.new(amplifier_conversation_id: params[:amplifier_conversation_id])
+    @attachment.file.attach(params[:attachment][:file])
+
+    if @attachment.save
+      render json: { success: true, attachment: { filename: @attachment.file.filename.to_s } }, status: :created
+    else
+      render json: { success: false, errors: @attachment.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def amplifier_params
