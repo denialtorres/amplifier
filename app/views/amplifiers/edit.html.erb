@@ -28,9 +28,10 @@
               <%= f.label :attachment, "Attachment:" %>
               <%= f.file_field :attachment, data: { action: 'change->amplifier#uploadAttachment' } %>
               <%= hidden_field_tag :amplifier_conversation_id, @conversation.id %>
-              <ul class="uploaded-files-list">
-                <%= render partial: "uploaded_files", locals: { uploaded_files: @conversation.attachments } %>
-              </ul>
+              <%= turbo_stream_from 'attachment_list' %>
+              <div id="attachment-list">
+                <%= render partial: 'amplifiers/attachment_list', locals: { attachments: @conversation.attachments } %>
+              </div>
             </div>
           <% end %>
           <%= render partial: "amplifier_conversations/messages", locals: { amplifier: @amplifier, conversation: @conversation  } %>

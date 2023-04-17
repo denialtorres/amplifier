@@ -1,0 +1,8 @@
+<% attachments.order(created_at: :asc).each do |attachment| %>
+  <li>
+    <%= attachment.file.blob.filename %>
+    <small class="<%= attachment.document_id.present? ? 'text-success' : 'text-danger' %>">
+      <%= attachment.document_id.present? ? 'Processed' : 'Not Processed' %>
+    </small>
+  </li>
+<% end %>

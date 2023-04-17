@@ -6,6 +6,13 @@ class ProcessUploadedFileJob < ApplicationJob
     response = upsert_file(attachment)
 
     update_attachment_document_id(attachment, response) if response.errors.blank?
+
+    # Broadcast the updated list of attachments
+    attachments = Attachment.where(amplifier_conversation_id: attachment.amplifier_conversation_id)
+    Turbo::StreamsChannel.broadcast_replace_to "attachment_list",
+                          target: "attachment-list",
+                          partial: "amplifiers/attachment_list",
+                          locals: { attachments: attachments.order(created_at: :asc) }
   end
 
   private
