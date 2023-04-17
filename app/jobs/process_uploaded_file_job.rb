@@ -3,6 +3,7 @@ class ProcessUploadedFileJob < ApplicationJob
 
   def perform(attachment_id)
     attachment = Attachment.find(attachment_id)
+
     response = upsert_file(attachment)
 
     update_attachment_document_id(attachment, response) if response.errors.blank?

@@ -76,7 +76,7 @@ class DocsApi
     file_blob = attachment.file.blob
     file_contents = file_blob.download
     file_io = StringIO.new(file_contents)
-    content_type = MimeMagic.by_magic(file_io).type
+    content_type = file_blob.content_type || MimeMagic.by_magic(file_io).type
     filename = file_blob.filename.to_s
 
     [file_io, content_type, filename]

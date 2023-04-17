@@ -24,7 +24,7 @@ class RetrieveSemanticResults
     end
 
     assistant_semantic_context = {
-      role: "assistant",
+      role: "user",
       content: "Based on a semantic search, here are the top results: " + semantic_result,
     }
 
