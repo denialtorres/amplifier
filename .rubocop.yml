@@ -15,3 +15,5 @@ AllCops:
 
 Layout/LineLength:
   Max: 160
+  Exclude:
+    - 'app/interactors/generate_conversation.rb'

@@ -38,6 +38,7 @@ class RetrieveSemanticResults
       "queries": [
         {
           "query": message.content,
+          "hyde": true,
           "filter": {
             "document_id": document_id,
           },

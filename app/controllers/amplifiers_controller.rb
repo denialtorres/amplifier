@@ -91,7 +91,7 @@ class AmplifiersController < ApplicationController
     if @attachment.save
       ProcessUploadedFileJob.perform_later(@attachment.id)
 
-      render json: { success: true, attachment: { filename: @attachment.file.filename.to_s } }, status: :created
+      render json: { success: true, attachment: { filename: @attachment.file.filename.to_s, state: @attachment.state } }, status: :created
     else
       render json: { success: false, errors: @attachment.errors.full_messages }, status: :unprocessable_entity
     end

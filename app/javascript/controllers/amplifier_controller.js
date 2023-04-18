@@ -33,7 +33,7 @@ export default class extends Controller {
           if (data.success) {
             // Handle success, e.g. show success message, add attachment to the list, etc.
             const newFile = document.createElement("li");
-            newFile.textContent = data.attachment.filename;
+            newFile.innerHTML = `${data.attachment.filename} <small class="text-warning">${_.startCase(data.attachment.state)}</small>`;
             const fileList = this.element.querySelector("#attachment-list");
             fileList.appendChild(newFile);
           } else {

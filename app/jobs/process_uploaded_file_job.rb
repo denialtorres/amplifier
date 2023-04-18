@@ -6,7 +6,11 @@ class ProcessUploadedFileJob < ApplicationJob
 
     response = upsert_file(attachment)
 
-    update_attachment_document_id(attachment, response) if response.errors.blank?
+    if response.errors.blank?
+      update_attachment_document_id(attachment, response)
+    else
+      attachment.processing_failed!
+    end
 
     # Broadcast the updated list of attachments
     attachments = Attachment.where(amplifier_conversation_id: attachment.amplifier_conversation_id)
@@ -20,11 +24,13 @@ class ProcessUploadedFileJob < ApplicationJob
 
   def upsert_file(attachment)
     docs_api = DocsApi.instance
-    docs_api.upsert_file({metadata: {}}, attachment)
+    docs_api.upsert_file({ metadata: {} }, attachment)
   end
 
   def update_attachment_document_id(attachment, response)
     document_id = response.body["ids"].first
     attachment.update(document_id: document_id)
+    # Change state to 'processed'
+    attachment.process_file!
   end
 end
