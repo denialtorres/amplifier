@@ -12,15 +12,14 @@
       </ul>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <% if current_user %>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
-              <%= current_user.email %>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown">
-              <li><%= link_to "Edit Account", edit_user_registration_path, class:"dropdown-item" %></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><%= button_to "Sign out", destroy_user_session_path, method: :delete, class:"dropdown-item" %></li>
-            </ul>
+          <li class="nav-item">
+            <span class="nav-link"><%= current_user.email %></span>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Edit Account", edit_user_registration_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "btn btn-link nav-link", style: "padding: 0.5rem 1rem;" %>
           </li>
         <% else %>
           <li class="nav-item">
