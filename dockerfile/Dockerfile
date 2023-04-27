@@ -3,10 +3,9 @@ FROM ruby:2.7.1-slim
 ARG BUNDLE_GITHUB__COM
 ARG GITHUB_ACCESS_TOKEN
 
-RUN apt-get update && apt upgrade -y debian-archive-keyring
+RUN apt-get update && apt upgrade -y
 
 RUN for i in $(seq 1 8); do mkdir -p "/usr/share/man/man${i}"; done && \
-  echo "deb http://ftp.us.debian.org/debian stretch-backports main" >> /etc/apt/sources.list && \
   apt-get update && apt-get install -yqq \
   build-essential \
   postgresql-client \
