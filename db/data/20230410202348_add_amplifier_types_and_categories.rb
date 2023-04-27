@@ -21,9 +21,14 @@ class AddAmplifierTypesAndCategories < ActiveRecord::Migration[7.0]
 
     amplifier_types.each do |type|
       a = AmplifierType.create(title: type[0])
-      type[1].each do |category|
+      type[1].each do |item|
+        category = item.first
+        prompt = item.last
+
         a.amplifier_prompt_categories
           .create(title: category)
+        a.amplifier_prompts
+          .create(title: category, description: prompt)
       end
     end
   end
