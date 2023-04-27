@@ -23,6 +23,16 @@
               <%= f.text_field :title, id: "amplifier-title", class: "form-control" %>
               <div id="amplifier-title-saved" class="text-success">Saved</div>
             </div>
+
+            <div class="form-group" data-controller="amplifier">
+              <%= f.label :attachment, "Attachment:" %>
+              <%= f.file_field :attachment, data: { action: 'change->amplifier#uploadAttachment' } %>
+              <%= hidden_field_tag :amplifier_conversation_id, @conversation.id %>
+              <%= turbo_stream_from 'attachment_list' %>
+              <div id="attachment-list">
+                <%= render partial: 'amplifiers/attachment_list', locals: { attachments: @conversation.attachments } %>
+              </div>
+            </div>
           <% end %>
           <%= render partial: "amplifier_conversations/messages", locals: { amplifier: @amplifier, conversation: @conversation  } %>
           <div class="row">

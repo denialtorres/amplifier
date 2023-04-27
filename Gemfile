@@ -65,8 +65,29 @@ gem "ruby-openai"
 # interactor gem
 gem "interactor"
 
+# pdf converter
+gem "pdf-reader"
+
+# for env variables
+gem "figaro"
+
+# mimetypes
+gem "mimemagic"
+
+# rest client
+gem "http"
+
+# for heroku
+gem "rails_12factor"
+
+# s3
+gem "aws-sdk-s3", require: false
+
 # Use Sass to process CSS
-# gem "sassc-rails"
+gem "sassc-rails"
+
+# background jobs
+gem "sidekiq", "<7"
 
 # Provision tables with data
 gem 'data_migrate'

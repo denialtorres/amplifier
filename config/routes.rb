@@ -1,13 +1,17 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   devise_for :users
 
   authenticated :user do
+    mount Sidekiq::Web => "/sidekiq"
+
     root "amplifiers#index", as: :authenticated_root
     get 'amplifiers/new', to: 'amplifiers#new_amplifier', as: 'new_amplifier'
 
-
     resources :amplifiers do
       post 'create_conversation', on: :collection
+      post 'attachments', on: :collection
     end
   end
 

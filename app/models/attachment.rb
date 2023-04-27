@@ -10,7 +10,35 @@
 #  updated_at                :datetime         not null
 #
 class Attachment < ApplicationRecord
-  belongs_to :amplifier_conversation
+  include AASM
 
-  # Add any validations and associations here
+  belongs_to :amplifier_conversation
+  has_one_attached :file
+
+  enum state: { uploaded: 0, processed: 1, error: 2 }
+
+  # Scope to filter attachments that have a document_id
+  scope :processed_files, -> { where.not(document_id: nil) }
+
+  after_create :set_initial_state
+
+  aasm column: :state, enum: true do
+    state :uploaded, initial: true
+    state :processed
+    state :error
+
+    event :process_file do
+      transitions from: :uploaded, to: :processed
+    end
+
+    event :processing_failed do
+      transitions from: :uploaded, to: :error
+    end
+  end
+
+  private
+
+  def set_initial_state
+    uploaded!
+  end
 end
