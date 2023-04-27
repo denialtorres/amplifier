@@ -13,6 +13,9 @@ class AddAmplifierTypesAndCategories < ActiveRecord::Migration[7.0]
       ],
       planner: [
         ["Spreadsheet", "Make me a spreadsheet to have the %{type} post schedule for a %{period}, making %{repetition}. There are %{number_copies} copies in three %{type}, therefore I need nine copies per week. The CTA of all copies will be the same, visit the website %{website} to request services as a creator of web pages, manager of social networks and offer digital solutions for companies. The columns should be: %{columns}, copy adapted for %{network} (all copies must be %{emotion} tone, and the appropriate hashtag for each social network). The first day is %{start_date}."]
+      ],
+      general: [
+        ["General", "%{general}"]
       ]
     }
 
