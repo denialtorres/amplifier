@@ -36,11 +36,6 @@ k12_descriptions = [
 # Create the user
 User.create!(email: 'admin@admin.com', password: 'password')
 
-# Create 5 amplifier types
-["Mathematics", "Science", "Social Studies", "English Language Arts", "Physical Education"].each do |title|
-  AmplifierType.create!(title: title)
-end
-
 AmplifierType.create!(title: "Unassigned")
 
 # Create 10 amplifiers assigned to the user
