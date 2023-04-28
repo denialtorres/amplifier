@@ -1,3 +1,5 @@
+require 'securerandom'
+
 class ProcessUploadedFileJob < ApplicationJob
   queue_as :semantic
 
@@ -25,7 +27,7 @@ class ProcessUploadedFileJob < ApplicationJob
 
   def upsert_file(attachment)
     docs_api = DocsApi.instance
-    docs_api.upsert_file({ metadata: {} }, attachment)
+    docs_api.upsert_file({ metadata: { room_id: SecureRandom.uuid } }, attachment)
   end
 
   def update_attachment_document_id(attachment, response)
