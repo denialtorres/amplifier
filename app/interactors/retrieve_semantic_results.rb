@@ -2,6 +2,8 @@ class RetrieveSemanticResults
   include Interactor
 
   def call
+    # return if attachments.blank?
+
     context.final_converstaion = include_semantic_results
   rescue StandardError => e
     context.fail!(message: e.message, error_code: :internal)
