@@ -78,6 +78,15 @@ class AmplifiersController < ApplicationController
     ]
   end
 
+  def upload_url
+    @conversation = AmplifierConversation.find(params[:amplifier_conversation_id])
+    @attachment_url = @conversation.attachments.new(url: params[:attachment][:url])
+
+    if @attachment_url.save!
+      ProcessUploadedUrlJob.perform_later(@attachment_url.id)
+    end
+  end
+
 
   def create_conversation
     result = CreateConversationOrganizer.call(

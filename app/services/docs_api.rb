@@ -29,6 +29,11 @@ class DocsApi
     convert_response(response)
   end
 
+  def upsert_url(params, attachment)
+    response = upload_url(params, attachment)
+    convert_response(response)
+  end
+
   private
 
   attr_reader :headers, :base_uri
@@ -50,6 +55,11 @@ class DocsApi
     post("#{base_uri}/documents/upsert-file", form: form_data)
   end
 
+  def upload_url(params, attachment)
+    form_data = build_url_data(params, attachment)
+    post("#{base_uri}/documents/upsert-file", form: form_data)
+  end
+
   def post(uri, options)
     HTTP.headers(headers).post(uri, options)
   end
@@ -62,6 +72,14 @@ class DocsApi
       metadata: params[:metadata].to_json,
     }
   end
+
+  def build_url_data(params, attachment_url)
+    {
+      links: attachment_url,
+      metadata: params[:metadata].to_json,
+    }
+  end
+
 
   def read_file(file_path)
     file_contents = IO.binread(file_path)

@@ -37,6 +37,15 @@
               </div>
             </div>
           <% end %>
+          <%= form_tag upload_url_path, method: :post, id: "url-upload-form" do %>
+            <div class="form-group">
+              <%= label_tag "attachment[url]", "Attachment URL:" %>
+              <%= text_field_tag "attachment[url]", nil, id: "attachment-url", class: "form-control" %>
+            </div>
+            <%= hidden_field_tag :amplifier_conversation_id, @conversation.id %>
+            <%= submit_tag "Upload URL", class: "btn btn-primary" %>
+          <% end %>
+          
           <%= turbo_stream_from 'message_container' %>
           <div id="message-wrapper">
             <%= render partial: "amplifier_conversations/messages", locals: { amplifier: @amplifier, conversation: @conversation  } %>

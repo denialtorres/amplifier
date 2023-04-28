@@ -41,7 +41,7 @@ class GenerateConversation
   def user_instruction
     {
       role: "user",
-      content: "whenever i refer to a video or a document or image or any type of file, I am actually talking about the results of the semantic search",
+      content: "whenever i refer to a video or a document or image or link or any type of file, I am actually talking about the results of the semantic search",
     }
   end
 

@@ -1,8 +1,17 @@
 <% attachments.order(created_at: :asc).each do |attachment| %>
-<li>
-  <%= attachment.file.blob.filename %>
-  <small class="<%= attachment.state == 'uploaded' ? 'text-warning' : (attachment.state == 'processed' ? 'text-success' : 'text-danger') %>">
-    <%= attachment.state.humanize %>
-  </small>
-</li>
+ <% if attachment.url.present? %>
+   <li>
+     <%= attachment.url %>
+     <small class="<%= attachment.state == 'uploaded' ? 'text-warning' : (attachment.state == 'processed' ? 'text-success' : 'text-danger') %>">
+       <%= attachment.state.humanize %>
+     </small>
+   </li>
+ <% else %>
+    <li>
+      <%= attachment.file.blob.filename %>
+      <small class="<%= attachment.state == 'uploaded' ? 'text-warning' : (attachment.state == 'processed' ? 'text-success' : 'text-danger') %>">
+        <%= attachment.state.humanize %>
+      </small>
+    </li>
+  <% end %>
 <% end %>

@@ -23,4 +23,5 @@ Rails.application.routes.draw do
   get "about", to: "pages#about"
   resources :amplifier_prompts, only: [:index]
   get 'get_partial', to: 'amplifier_prompts#get_partial'
+  post 'upload_url', to: 'amplifiers#upload_url', as: 'upload_url'
 end
