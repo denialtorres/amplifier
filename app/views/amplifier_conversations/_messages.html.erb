@@ -19,14 +19,25 @@
 </style>
 
 <div id="message_container" class="message-container">
-  <% if defined?(conversation) %>
-    <% conversation.messages.each do |message| %>
+  <% if defined?(custom_conversation) %>
+    <% if defined?(message) %>
       <div class="message <%= message.speaker %>">
-        <span class="speaker"><%= message.speaker.to_s.capitalize %>:</span>
+        <span class="speaker">Assistant:</span>
         <%= simple_format(message.content) %>
       </div>
+    <% else %>
+      New Conversation
     <% end %>
   <% else %>
-    New Conversation
+    <% if defined?(conversation) %>
+      <% conversation.messages.each do |message| %>
+        <div class="message <%= message.speaker %>">
+          <span class="speaker"><%= message.speaker.to_s.capitalize %>:</span>
+          <%= simple_format(message.content) %>
+        </div>
+      <% end %>
+    <% else %>
+      New Conversation
+    <% end %>
   <% end %>
 </div>

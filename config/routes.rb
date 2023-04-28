@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
     resources :amplifiers do
       post 'create_conversation', on: :collection
+      post 'create_custom_conversation', on: :collection
       post 'attachments', on: :collection
     end
   end
@@ -20,4 +21,6 @@ Rails.application.routes.draw do
   end
 
   get "about", to: "pages#about"
+  resources :amplifier_prompts, only: [:index]
+  get 'get_partial', to: 'amplifier_prompts#get_partial'
 end

@@ -113,6 +113,9 @@ GEM
     crass (1.0.6)
     cssbundling-rails (1.1.2)
       railties (>= 6.0.0)
+    data_migrate (9.0.0)
+      activerecord (>= 6.0)
+      railties (>= 6.0)
     date (3.3.3)
     debug (1.7.1)
       irb (>= 1.5.0)
@@ -405,6 +408,7 @@ DEPENDENCIES
   bootsnap
   capybara
   cssbundling-rails
+  data_migrate
   debug
   devise
   factory_bot_rails
@@ -445,4 +449,4 @@ RUBY VERSION
    ruby 2.7.1p83
 
 BUNDLED WITH
-   2.3.4
+   2.4.10

@@ -1,0 +1,22 @@
+<div id="partial-wrapper">
+  <%= form_tag create_custom_conversation_amplifiers_path, method: :post, remote: true, data: { turbo: :true } do %>
+    <% category.inputs.each do |input_name, input_type| %>
+      <div class="form-group">
+        <%= label_tag input_name, input_name.capitalize %>
+        <% if input_type == "text_field" %>
+          <%= text_field_tag "custom_inputs[#{input_name}]", nil, class: "form-control" %>
+        <% elsif input_type == "textarea" %>
+          <%= text_area_tag "custom_inputs[#{input_name}]", nil, class: "form-control" %>
+        <% elsif input_type == "select" %>
+          <!-- Replace 'options' with an array of options for the select input -->
+          <%= select_tag "custom_inputs[#{input_name}]", options_for_select(options), class: "form-control" %>
+        <% end %>
+      </div>
+    <% end %>
+    <%= hidden_field_tag :conversation_id, conversation.id %>
+    <%= hidden_field_tag :category_id, category.id %>
+    <div style="margin-top: 16px;">
+      <%= submit_tag "Submit", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

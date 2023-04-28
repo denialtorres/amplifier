@@ -17,6 +17,9 @@
       <div class="row">
         <div class="col-md-6">
           <h1 class="">Create Assignment</h1>
+          <input type="hidden" id="amplifier_id" value="<%= @amplifier.id %>">
+          <input type="hidden" id="conversation_id" value="<%= @conversation.id %>">
+
           <%= form_for @amplifier, url: amplifier_path(@amplifier), html: {method: "patch", 'data-turbo-action': "replace", id: "amplifier-form"} do |f| %>
             <div class="form-group">
               <%= f.label :title, "Amplifier Title:" %>
@@ -35,7 +38,7 @@
             </div>
           <% end %>
           <%= render partial: "amplifier_conversations/messages", locals: { amplifier: @amplifier, conversation: @conversation  } %>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-12">
               <div class="form-group">
                 <div>
@@ -56,48 +59,34 @@
                   </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="col-md-6" data-controller="messages">
           <h1 class="">Amplifier</h1>
-          <%= render partial: "amplifiers/form_conversation", locals: { amplifier: @amplifier, conversation: @conversation } %>
           <div class="card mb-3">
-            <div class="card-header"> Amplifier Type</div>
+            <div class="card-header">Amplifier Type</div>
             <div class="card-body">
-              <div class="btn-group">
-                <div class="form-group">
-                  <%= label_tag :amplifier_type_id, "Amplifier Type" %>
-                  <%= select_tag :amplifier_type_id, options_for_select(AmplifierType.all.map{ |type| [type.title, type.id] }, selected: @amplifier.amplifier_type_id), class: "form-control" %>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <%= label_tag :amplifier_type_id, "Amplifier Type" %>
+                    <%= select_tag :amplifier_type_id, options_for_select(AmplifierType.where.not(title: 'Unassigned').order(:title).map{ |type| [type.title, type.id] }, selected: @amplifier.amplifier_type_id), class: "form-control", id: "amplifier-type-dropdown" %>
+                  </div>
                 </div>
               </div>
-              <p>Category Type</p>
-              <div class="btn-group">
-                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> Dropdown </button>
-                <div class="dropdown-menu"> <a class="dropdown-item" href="#">Action</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Separated link</a>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <%= label_tag :category_type_id, "Category Type" %>
+                    <%= select_tag :category_type_id, options_for_select([]), class: "form-control", id: "category-type-dropdown" %>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="card">
-            <div class="card-header"> Course Information</div>
-            <div class="card-body">
-              <p>Course</p>
-              <div class="btn-group">
-                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> Math Second Grade </button>
-                <div class="dropdown-menu"> <a class="dropdown-item" href="#">Action</a>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <p>Grade</p>
-              <div class="btn-group">
-                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> Second Grade </button>
-                <div class="dropdown-menu"> <a class="dropdown-item" href="#">Action</a>
-                </div>
-              </div>
-            </div>
+          <%= turbo_stream_from 'partial_wrapper' %>
+          <div id="partial-wrapper">
+            <%= render partial: "amplifiers/form_conversation", locals: { amplifier: @amplifier, conversation: @conversation, user_id: current_user.id } %>
           </div>
         </div>
       </div>
@@ -106,4 +95,66 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener('turbo:load', function() {
+      const categoryTypeDropdown = document.getElementById('category-type-dropdown');
+      const partialWrapper = document.getElementById('partial-wrapper');
+
+      // Event listener for the change event on the category type dropdown
+      categoryTypeDropdown.addEventListener("change", function() {
+        // Update the value of the category_id hidden field
+        categoryIdHiddenField = document.getElementById('category_id');
+        categoryIdHiddenField.value = categoryTypeDropdown.value;
+      });
+
+      // Function to show or hide the partial based on the dropdown value
+      function togglePartial() {
+        let partialName = '';
+
+        if (categoryTypeDropdown.textContent === 'General') {
+          partialName = 'form_conversation'; // The partial to display when the value is 'some_value'
+        } else {
+          partialName = 'custom_inputs'; // The partial to display for other values
+        }
+
+        fetchPartial(partialName, categoryTypeDropdown.value);
+      }
+
+      // Function to fetch the partial and replace the existing one
+      function fetchPartial(partialName, categoryTypeId) {
+        const amplifierId = document.getElementById('amplifier_id').value;
+        const conversationId = document.getElementById('conversation_id').value;
+        fetch(`/get_partial?partial_name=${partialName}&category_type_id=${categoryTypeId}&amplifier_id=${amplifierId}&conversation_id=${conversationId}`, {
+          headers: {
+            'Accept': 'text/vnd.turbo-stream.html'
+          }
+        });
+      }
+
+      // Function to update category type dropdown
+      function updateCategoryTypeDropdown(amplifierTypeId) {
+        fetch("/amplifier_prompts?amplifier_type_id=" + amplifierTypeId)
+          .then(response => response.json())
+          .then(data => {
+            var dropdown = document.getElementById("category-type-dropdown");
+            var options = data.map(prompt => [prompt.title, prompt.id]);
+            dropdown.innerHTML = optionsForSelect(options);
+            togglePartial(); // Call the toggle function after updating the dropdown
+          });
+      }
+
+      // Helper function to generate options for select tag
+      function optionsForSelect(options) {
+        return options.map(option => `<option value="${option[1]}">${option[0]}</option>`).join('');
+      }
+
+      // Listen for changes on the amplifier type dropdown
+      document.getElementById("amplifier-type-dropdown").addEventListener("change", function() {
+        updateCategoryTypeDropdown(this.value);
+      });
+
+      // Update the category type dropdown with the initial selection
+      updateCategoryTypeDropdown(document.getElementById("amplifier-type-dropdown").value);
+    });
+  </script>
 </body>

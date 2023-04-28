@@ -59,6 +59,25 @@ class AmplifiersController < ApplicationController
     end
   end
 
+  def create_custom_conversation
+    result = CreateCustomConversationOrganizer.call(
+      conversation_id: params[:conversation_id],
+      category_id: params[:category_id],
+      custom_inputs: custom_inputs_params.to_h,
+      speaker: :human
+    )
+
+    if result.success?
+      render turbo_stream: [
+        turbo_stream.replace(
+          "message_container",
+          partial: "amplifier_conversations/messages",
+          locals: { message: result.conversation.messages.last, conversation: result.conversation, custom_conversation: true }
+        )
+      ]
+    end
+  end
+
   def create_conversation
     result = CreateConversationOrganizer.call(
       conversation_id: message_params[:conversation_id],
@@ -78,6 +97,7 @@ class AmplifiersController < ApplicationController
           locals: {
             amplifier: result.conversation.amplifier, conversation: result.conversation,
             message: "",
+            user_id: current_user.id
           }
         ),
       ]
@@ -98,6 +118,9 @@ class AmplifiersController < ApplicationController
   end
 
   private
+  def custom_inputs_params
+    params.require(:custom_inputs).permit!
+  end
 
   def amplifier_params
     params.require(:amplifier).permit(:title)
