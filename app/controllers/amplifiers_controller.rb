@@ -60,23 +60,24 @@ class AmplifiersController < ApplicationController
   end
 
   def create_custom_conversation
-    result = CreateCustomConversationOrganizer.call(
-      conversation_id: params[:conversation_id],
-      category_id: params[:category_id],
-      custom_inputs: custom_inputs_params.to_h,
-      speaker: :human
+    conversation = AmplifierConversation.find(params[:conversation_id])
+
+    CreateCustomConversationJob.perform_later(
+      params[:conversation_id],
+      params[:category_id],
+      custom_inputs_params.to_h,
+      :human
     )
 
-    if result.success?
-      render turbo_stream: [
-        turbo_stream.replace(
-          "message_container",
-          partial: "amplifier_conversations/messages",
-          locals: { message: result.conversation.messages.last, conversation: result.conversation, custom_conversation: true }
-        )
-      ]
-    end
+    render turbo_stream: [
+      turbo_stream.replace(
+        "message_container",
+        partial: "amplifier_conversations/messages",
+        locals: { message: OpenStruct.new(content: "Generating...", speaker: "Assistant"), conversation: conversation, custom_conversation: true }
+      )
+    ]
   end
+
 
   def create_conversation
     result = CreateConversationOrganizer.call(

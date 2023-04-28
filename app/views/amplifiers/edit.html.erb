@@ -37,7 +37,10 @@
               </div>
             </div>
           <% end %>
-          <%= render partial: "amplifier_conversations/messages", locals: { amplifier: @amplifier, conversation: @conversation  } %>
+          <%= turbo_stream_from 'message_container' %>
+          <div id="message-wrapper">
+            <%= render partial: "amplifier_conversations/messages", locals: { amplifier: @amplifier, conversation: @conversation  } %>
+          </div>
           <!-- <div class="row">
             <div class="col-md-12">
               <div class="form-group">
