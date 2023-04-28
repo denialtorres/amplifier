@@ -29,7 +29,7 @@
 
             <div class="form-group" data-controller="amplifier">
               <%= f.label :attachment, "Attachment:" %>
-              <%= f.file_field :attachment, data: { action: 'change->amplifier#uploadAttachment' } %>
+              <%= f.file_field :attachment, accept: 'application/epub+zip,audio/mpeg,audio/mp4,audio/wav,video/mp4,video/webm,image/*,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/csv,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/markdown,text/plain,application/pdf', data: { action: 'change->amplifier#uploadAttachment' } %>
               <%= hidden_field_tag :amplifier_conversation_id, @conversation.id %>
               <%= turbo_stream_from 'attachment_list' %>
               <div id="attachment-list">
