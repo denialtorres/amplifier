@@ -9,6 +9,7 @@ class ProcessUploadedFileJob < ApplicationJob
     if response.errors.blank?
       update_attachment_document_id(attachment, response)
     else
+      puts "Errors --> #{response.errors}"
       attachment.processing_failed!
     end
 
